@@ -15,11 +15,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Fetch Latest APKEditor Tool
-        run: |
-          # Automatically downloads the official, latest executable JAR from REAndroid
-          curl -L -o APKEditor.jar https://github.com
-
       - name: Compile Source via REAndroid
         run: |
           java -jar APKEditor.jar b -i . -o HideDataIcon.apk
