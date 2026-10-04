@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Java Runtime
         uses: actions/setup-java@v5
@@ -22,7 +22,7 @@ jobs:
 
       - name: Compile Source via REAndroid
         run: |
-          java -jar APKEditor.jar b -i HideDataIcon_RRO_Source -o HideDataIcon.apk
+          java -jar APKEditor.jar b -i . -o HideDataIcon.apk
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
