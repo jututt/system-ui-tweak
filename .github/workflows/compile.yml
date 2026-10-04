@@ -1,0 +1,26 @@
+name: Cloud APK Compiler
+on: 
+  workflow_dispatch: # Allows you to manually click a button to build the app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java Runtime
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Change to '21' or '25' if your APK tool requires it
+
+      - name: Compile Source via REAndroid
+        run: |
+          java -jar APKEditor.jar b -i HideDataIcon_RRO_Source -o HideDataIcon.apk
+
+      - name: Upload Finished APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-overlay-apk
+          path: HideDataIcon.apk
