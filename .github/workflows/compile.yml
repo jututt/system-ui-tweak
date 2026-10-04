@@ -16,8 +16,8 @@ jobs:
           java-version: '17'
 
       - name: Compile Source via REAndroid
-        run: |
-          java -jar APKEditor-1.4.9 b -i . -o HideDataIcon.apk
+        run: 
+          java -jar APKEditor-1.4.9.jar b -i . -o HideDataIcon.apk
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
