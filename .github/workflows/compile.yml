@@ -20,14 +20,9 @@ jobs:
           wget https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar -O apktool.jar
           chmod +x apktool.jar
 
-      - name: Install Android framework
-        run: |
-          mkdir -p ~/.local/share/apktool/framework
-          wget https://raw.githubusercontent.com/iBotPeaches/Apktool/master/brut.apktool/apktool-lib/src/test/resources/framework/1.apk -O ~/.local/share/apktool/framework/1.apk
-
       - name: Build APK
         run: |
-          java -jar apktool.jar b -o HideDataIcon.apk .
+          java -jar apktool.jar b --no-res -o HideDataIcon.apk .
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
