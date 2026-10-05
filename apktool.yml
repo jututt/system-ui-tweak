@@ -4,3 +4,4 @@ packageInfo:
 usesFramework:
   ids:
     - 1
+  tag: android
