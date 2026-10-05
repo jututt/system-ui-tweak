@@ -18,7 +18,13 @@ jobs:
       - name: Install Android Build Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y android-sdk-build-tools
+          sudo apt-get install -y android-sdk-build-tools android-sdk
+
+      - name: Find Android Platform JAR
+        run: |
+          ANDROID_JAR=$(find /usr/lib/android-sdk/platforms -name "android.jar" | sort -V | tail -1)
+          echo "ANDROID_JAR=$ANDROID_JAR" >> $GITHUB_ENV
+          echo "Using Android JAR: $ANDROID_JAR"
 
       - name: Compile RRO APK with aapt2
         run: |
@@ -27,7 +33,7 @@ jobs:
           aapt2 link \
             -o HideDataIcon.apk \
             --manifest AndroidManifest.xml \
-            -I /usr/lib/android-sdk/platforms/android-34/android.jar \
+            -I "$ANDROID_JAR" \
             compiled/resources.zip
 
       - name: Upload Finished APK Artifact
