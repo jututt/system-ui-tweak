@@ -15,19 +15,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Download Android Build Tools
+        run: |
+          mkdir -p ~/android-sdk/build-tools
+          cd ~/android-sdk/build-tools
+          wget https://dl.google.com/android/repository/build-tools_r34.0.0-linux.zip
+          unzip -q build-tools_r34.0.0-linux.zip
+          mv android-14 aapt2-build
+          chmod +x aapt2-build/aapt2
+
       - name: Build RRO APK
         run: |
           mkdir -p build
-          
-          # Use aapt2 from installed build-tools
-          AAPT2=$(find /usr/lib/android-sdk/build-tools -name "aapt2" | head -1)
-          
-          if [ -z "$AAPT2" ]; then
-            # Fallback: try common location
-            AAPT2="/usr/bin/aapt2"
-          fi
-          
-          echo "Using aapt2: $AAPT2"
+          AAPT2=~/android-sdk/build-tools/aapt2-build/aapt2
           
           # Compile resources
           $AAPT2 compile -o build/compiled.flata res/layout/status_bar_mobile_signal_group_inner.xml
