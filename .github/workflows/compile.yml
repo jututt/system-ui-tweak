@@ -20,17 +20,6 @@ jobs:
           wget https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar -O apktool.jar
           chmod +x apktool.jar
 
-      - name: Create apktool.yml
-        run: |
-          cat > apktool.yml << 'EOF'
-version: 2
-packageInfo:
-  forcedPackageId: "127"
-usesFramework:
-  ids:
-    - 1
-EOF
-
       - name: Build APK
         run: |
           java -jar apktool.jar b -o HideDataIcon.apk .
