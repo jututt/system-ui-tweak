@@ -15,25 +15,35 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Android Build Tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y android-sdk-build-tools android-sdk
-
-      - name: Find Android Platform JAR
-        run: |
-          ANDROID_JAR=$(find /usr/lib/android-sdk/platforms -name "android.jar" | sort -V | tail -1)
-          echo "ANDROID_JAR=$ANDROID_JAR" >> $GITHUB_ENV
-          echo "Using Android JAR: $ANDROID_JAR"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
 
       - name: Compile RRO APK with aapt2
         run: |
           mkdir -p compiled
+          
+          # Use the system framework
+          ANDROID_HOME=${ANDROID_HOME:-$HOME/android-sdk}
+          FRAMEWORK_JAR="$ANDROID_HOME/platforms/android-34/android.jar"
+          
+          if [ ! -f "$FRAMEWORK_JAR" ]; then
+            # Fallback: try to find any available platform
+            FRAMEWORK_JAR=$(find $ANDROID_HOME/platforms -name "android.jar" 2>/dev/null | head -1)
+          fi
+          
+          if [ -z "$FRAMEWORK_JAR" ]; then
+            echo "Warning: No android.jar found, building without framework"
+            FRAMEWORK_FLAG=""
+          else
+            echo "Using framework: $FRAMEWORK_JAR"
+            FRAMEWORK_FLAG="-I $FRAMEWORK_JAR"
+          fi
+          
           aapt2 compile -o compiled/resources.zip res/layout/status_bar_mobile_signal_group_inner.xml res/values/public.xml
           aapt2 link \
             -o HideDataIcon.apk \
             --manifest AndroidManifest.xml \
-            -I "$ANDROID_JAR" \
+            $FRAMEWORK_FLAG \
             compiled/resources.zip
 
       - name: Upload Finished APK Artifact
