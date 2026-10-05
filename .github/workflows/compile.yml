@@ -15,32 +15,30 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          api-level: 34
-
       - name: Build RRO APK
         run: |
           mkdir -p build
           
-          # Compile resources
-          aapt2 compile -o build/compiled.flata res/layout/status_bar_mobile_signal_group_inner.xml
-          aapt2 compile -o build/compiled.flatb res/values/public.xml
+          # Use aapt2 from installed build-tools
+          AAPT2=$(find /usr/lib/android-sdk/build-tools -name "aapt2" | head -1)
           
-          # Link into APK (no framework needed for overlay)
-          aapt2 link \
+          if [ -z "$AAPT2" ]; then
+            # Fallback: try common location
+            AAPT2="/usr/bin/aapt2"
+          fi
+          
+          echo "Using aapt2: $AAPT2"
+          
+          # Compile resources
+          $AAPT2 compile -o build/compiled.flata res/layout/status_bar_mobile_signal_group_inner.xml
+          $AAPT2 compile -o build/compiled.flatb res/values/public.xml
+          
+          # Link into APK
+          $AAPT2 link \
             --package-id 0x7f \
-            -o HideDataIcon-unsigned.apk \
+            -o HideDataIcon.apk \
             --manifest AndroidManifest.xml \
             build/compiled.flata build/compiled.flatb
-          
-          # Sign with debug key
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-            -keystore ~/.android/debug.keystore -storepass android -keypass android \
-            HideDataIcon-unsigned.apk androiddebugkey
-          
-          mv HideDataIcon-unsigned.apk HideDataIcon.apk
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
