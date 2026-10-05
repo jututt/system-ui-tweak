@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Add a public entry for every single resource inside your overlay -->
-    <!-- Example if your overlay modifies a status bar icon or color: -->
-    <public type="drawable" name="ic_hide_data" id="0x7f020000" />
-    <public type="color" name="status_bar_color" id="0x7f040000" />
+    <!-- Layout overrides for hiding 4G/5G icon -->
+    <public type="layout" name="status_bar_mobile_signal_group_inner" id="0x7f0d0000" />
 </resources>
