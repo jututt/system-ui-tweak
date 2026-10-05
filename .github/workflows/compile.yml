@@ -15,14 +15,32 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Download apktool
-        run: |
-          wget https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar -O apktool.jar
-          chmod +x apktool.jar
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 34
 
-      - name: Build APK
+      - name: Build RRO APK
         run: |
-          java -jar apktool.jar b --no-res -o HideDataIcon.apk .
+          mkdir -p build
+          
+          # Compile resources
+          aapt2 compile -o build/compiled.flata res/layout/status_bar_mobile_signal_group_inner.xml
+          aapt2 compile -o build/compiled.flatb res/values/public.xml
+          
+          # Link into APK (no framework needed for overlay)
+          aapt2 link \
+            --package-id 0x7f \
+            -o HideDataIcon-unsigned.apk \
+            --manifest AndroidManifest.xml \
+            build/compiled.flata build/compiled.flatb
+          
+          # Sign with debug key
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore ~/.android/debug.keystore -storepass android -keypass android \
+            HideDataIcon-unsigned.apk androiddebugkey
+          
+          mv HideDataIcon-unsigned.apk HideDataIcon.apk
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
