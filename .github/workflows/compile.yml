@@ -1,6 +1,6 @@
 name: Cloud APK Compiler
 on: 
-  workflow_dispatch: # Gives you a manual button to build the app
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,9 +15,20 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Compile Source via REAndroid
-        run: 
-          java -jar APKEditor-1.4.9.jar b -i . -o HideDataIcon.apk
+      - name: Install Android Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y android-sdk-build-tools
+
+      - name: Compile RRO APK with aapt2
+        run: |
+          mkdir -p compiled
+          aapt2 compile -o compiled/resources.zip res/layout/status_bar_mobile_signal_group_inner.xml res/values/public.xml
+          aapt2 link \
+            -o HideDataIcon.apk \
+            --manifest AndroidManifest.xml \
+            -I /usr/lib/android-sdk/platforms/android-34/android.jar \
+            compiled/resources.zip
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4
