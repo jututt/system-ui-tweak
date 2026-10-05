@@ -7,12 +7,12 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="center_vertical">
+        <!-- Hidden: mobile_type_container (4G/5G icon) -->
         <FrameLayout
             android:id="@*com.android.systemui:id/mobile_type_container"
             android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="@*com.android.systemui:dimen/status_bar_mobile_type_height"
-            android:layout_gravity="center_vertical">
+            android:layout_width="0dp"
+            android:layout_height="@*com.android.systemui:dimen/status_bar_mobile_type_height">
             <ImageView
                 android:id="@*com.android.systemui:id/mobile_type"
                 android:layout_width="wrap_content"
@@ -24,12 +24,12 @@
                 android:layout_height="@*com.android.systemui:dimen/status_bar_mobile_type_height"
                 android:adjustViewBounds="true" />
         </FrameLayout>
+        <!-- Hidden: mobile_type_space -->
         <FrameLayout
             android:id="@*com.android.systemui:id/mobile_type_space"
             android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="2dp">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
             <ImageView
                 android:layout_gravity="center_vertical"
                 android:id="@*com.android.systemui:id/mobile_type_image"
@@ -37,11 +37,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true" />
         </FrameLayout>
-        <Space
-            android:id="@*com.android.systemui:id/mobile_roaming_space"
-            android:visibility="gone"
-            android:layout_width="2dp"
-            android:layout_height="match_parent" />
+        <!-- Visible: Signal bars -->
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
