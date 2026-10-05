@@ -17,7 +17,7 @@ jobs:
 
       - name: Download apktool
         run: |
-          wget https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.9.3.jar -O apktool.jar
+          wget https://github.com/iBotPeaches/Apktool/releases/download/v2.9.3/apktool_2.9.3.jar -O apktool.jar
           chmod +x apktool.jar
 
       - name: Build APK
