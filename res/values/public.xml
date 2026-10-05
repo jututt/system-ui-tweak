@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <public type="layout" name="status_bar_mobile_signal_group_inner" id="0x7f0d0000" />
-    <public type="id" name="mobile_signal_group_inner" id="0x7f0a0001" />
-    <public type="id" name="mobile_type_container" id="0x7f0a0002" />
-    <public type="id" name="mobile_type_space" id="0x7f0a0003" />
-    <public type="id" name="mobile_signal" id="0x7f0a0004" />
-    <public type="id" name="mobile_type" id="0x7f0a0005" />
-    <public type="id" name="mobile_type_overlay" id="0x7f0a0006" />
-    <public type="id" name="mobile_roaming" id="0x7f0a0007" />
-    <public type="dimen" name="status_bar_icon_height" id="0x7f050001" />
-    <public type="dimen" name="status_bar_mobile_type_height" id="0x7f050002" />
-    <public type="drawable" name="stat_sys_roaming" id="0x7f020001" />
 </resources>
