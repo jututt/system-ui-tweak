@@ -21,26 +21,39 @@ jobs:
         with:
           packages: 'platforms;android-34 build-tools;34.0.0'
 
+      # Automatically strips the strict systemui prefixes so it can compile locally using your stubs.xml
+      - name: Patch Layout Resources
+        run: |
+          find res/layout/ -type f -name "*.xml" -exec sed -i 's/@\*com.android.systemui:/@/g' {} +
+
       - name: Build RRO APK
         run: |
           mkdir -p build
           AAPT2=$ANDROID_HOME/build-tools/34.0.0/aapt2
+          ZIPALIGN=$ANDROID_HOME/build-tools/34.0.0/zipalign
+          APKSIGNER=$ANDROID_HOME/build-tools/34.0.0/apksigner
           ANDROID_JAR=$ANDROID_HOME/platforms/android-34/android.jar
           
-          # Automatically strips the strict systemui prefixes so it can compile locally using your stubs.xml
-          find res/layout/ -type f -name "*.xml" -exec sed -i 's/@\*com.android.systemui:/@/g' {} +
-
           # 1. Compile the resource directory completely
           $AAPT2 compile --dir res/ -o build/compiled_res.flata
           
-          # 2. Link into APK 
+          # 2. Link into unaligned APK (Added '-0 xml' to keep layouts uncompressed)
           $AAPT2 link \
             -I "$ANDROID_JAR" \
             --allow-reserved-package-id \
             --package-id 0x7f \
-            -o HideDataIcon.apk \
+            -0 xml \
+            -o build/unaligned.apk \
             --manifest AndroidManifest.xml \
             build/compiled_res.flata
+
+          # 3. Align the APK on a 4-byte boundary (Crucial for system overlays)
+          $ZIPALIGN -f -v 4 build/unaligned.apk HideDataIcon.apk
+
+          # 4. Generate a debug keystore and sign the APK
+          # Modern Android frameworks often drop unsigned system/product APKs silently
+          keytool -genkey -v -keystore build/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          $APKSIGNER sign --ks build/debug.keystore --ks-pass pass:android --out HideDataIcon.apk HideDataIcon.apk
 
       - name: Upload Finished APK Artifact
         uses: actions/upload-artifact@v4.4.0
