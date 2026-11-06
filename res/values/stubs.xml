@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Declares the local layout target name -->
+    <item type="layout" name="status_bar_mobile_signal" />
+    
+    <!-- Declares the reference IDs used in overlays.xml -->
+    <item type="id" name="mobile_signal_group_inner" />
+    <item type="id" name="mobile_type_container" />
+    <item type="id" name="mobile_type" />
+    <item type="id" name="mobile_signal" />
+    
+    <!-- Fallback stub to trick AAPT2 into skipping the private drawable check -->
+    <item type="drawable" name="stat_sys_roaming" />
+</resources>
