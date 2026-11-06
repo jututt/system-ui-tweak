@@ -15,18 +15,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Automatically installs the official SDK, Build Tools (aapt2), and Android Platform 34 cleanly
+      # Corrected setup matching the new v3 syntax specifications
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 34
-          build-tools: 34.0.0
+          packages: 'platforms;android-34 build-tools;34.0.0'
 
       - name: Build RRO APK
         run: |
           mkdir -p build
           
-          # Using the official paths provided automatically by the setup-android action
+          # Map paths cleanly from the Android Home variable
           AAPT2=$ANDROID_HOME/build-tools/34.0.0/aapt2
           ANDROID_JAR=$ANDROID_HOME/platforms/android-34/android.jar
           
