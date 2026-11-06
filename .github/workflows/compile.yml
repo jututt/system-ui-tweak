@@ -7,17 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Java Runtime
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Install Android SDK Platform Base
         run: |
-          # Automatically downloads the official android.jar platform dependency required to link System XMLs
           mkdir -p ~/android-sdk/platforms/android-34
           wget -q https://github.com -O ~/android-sdk/platforms/android-34/android.jar || \
           curl -s https://googlesource.com | base64 --decode > ~/android-sdk/platforms/android-34/android.jar
@@ -26,7 +25,7 @@ jobs:
         run: |
           mkdir -p ~/android-sdk/build-tools
           cd ~/android-sdk/build-tools
-          wget -q https://dl.google.com/android/repository/build-tools_r34.0.0-linux.zip
+          wget -q https://google.com
           unzip -q build-tools_r34.0.0-linux.zip
           mv android-14 aapt2-build
           chmod +x aapt2-build/aapt2
@@ -37,12 +36,14 @@ jobs:
           AAPT2=~/android-sdk/build-tools/aapt2-build/aapt2
           ANDROID_JAR=~/android-sdk/platforms/android-34/android.jar
           
-          # 1. Compile the layout configuration (Pass the directory to pull overlays.xml too if it lives in res/xml/)
+          # 1. Compile the resource directory completely
           $AAPT2 compile --dir res/ -o build/compiled_res.flata
           
-          # 2. Link into APK using the framework map dependency
+          # 2. Link into APK with specific flags for private system packages
           $AAPT2 link \
             -I "$ANDROID_JAR" \
+            --allow-reserved-package-id \
+            --custom-package com.android.systemui \
             --package-id 0x7f \
             -o HideDataIcon.apk \
             --manifest AndroidManifest.xml \
