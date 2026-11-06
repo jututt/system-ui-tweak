@@ -43,7 +43,7 @@ jobs:
             build/compiled_res.flata
 
       - name: Upload Finished APK Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: compiled-overlay-apk
           path: HideDataIcon.apk
