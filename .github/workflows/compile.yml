@@ -26,15 +26,17 @@ jobs:
           AAPT2=$ANDROID_HOME/build-tools/34.0.0/aapt2
           ANDROID_JAR=$ANDROID_HOME/platforms/android-34/android.jar
           
+          # Automatically strips the strict systemui prefixes so it can compile locally using your stubs.xml
+          # Your overlays.xml file will handle routing these cleanly back to SystemUI at runtime!
+          find res/layout/ -type f -name "*.xml" -exec sed -i 's/@\*com.android.systemui:/@/g' {} +
+
           # 1. Compile the resource directory completely
           $AAPT2 compile --dir res/ -o build/compiled_res.flata
           
-          # 2. Link into APK with v14 flag to bypass private framework checks
+          # 2. Link into APK 
           $AAPT2 link \
             -I "$ANDROID_JAR" \
-            --v14 \
             --allow-reserved-package-id \
-            --custom-package com.android.systemui \
             --package-id 0x7f \
             -o HideDataIcon.apk \
             --manifest AndroidManifest.xml \
