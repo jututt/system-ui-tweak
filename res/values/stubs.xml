@@ -14,7 +14,7 @@
     <item type="id" name="mobile_roaming" />
     
     <!-- Dimensions & Static Assets -->
-    <dimen name="status_bar_mobile_type_height">8dp</dim dimen>
+    <dimen name="status_bar_mobile_type_height">8dp</dimen>
     <dimen name="status_bar_icon_height">16dp</dimen>
     <item type="drawable" name="stat_sys_roaming" />
 
