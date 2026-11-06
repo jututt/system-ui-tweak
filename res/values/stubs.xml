@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://android.com">
-    <!-- Layout targets -->
-    <item type="layout" name="status_bar_mobile_signal" />
-    <item type="layout" name="status_bar_mobile_signal_group_inner" />
     
     
     <item type="id" name="mobile_signal_group_inner" />
