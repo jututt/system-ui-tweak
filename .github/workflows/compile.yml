@@ -29,9 +29,10 @@ jobs:
           # 1. Compile the resource directory completely
           $AAPT2 compile --dir res/ -o build/compiled_res.flata
           
-          # 2. Link into APK with specific flags for private system packages
+          # 2. Link into APK with v14 flag to bypass private framework checks
           $AAPT2 link \
             -I "$ANDROID_JAR" \
+            --v14 \
             --allow-reserved-package-id \
             --custom-package com.android.systemui \
             --package-id 0x7f \
