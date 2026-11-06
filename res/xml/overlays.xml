@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlay>
+    <!-- Map the layout container -->
+    <item target="layout/status_bar_mobile_signal" value="@layout/status_bar_mobile_signal"/>
+
+    <!-- Explicitly tie your local cloud IDs to the system's actual IDs -->
+    <item target="id/mobile_signal_group_inner" value="@id/mobile_signal_group_inner"/>
+    <item target="id/mobile_type_container" value="@id/mobile_type_container"/>
+    <item target="id/mobile_type" value="@id/mobile_type"/>
+    <item target="id/mobile_signal" value="@id/mobile_signal"/>
+</overlay>
