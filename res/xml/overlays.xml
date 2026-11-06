@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay>
-    <!-- Map the layout container -->
-    <item target="layout/status_bar_mobile_signal" value="@layout/status_bar_mobile_signal"/>
+    <!-- Map the exact physical file name in your repo to SystemUI's targeted layout asset -->
+    <item target="layout/status_bar_mobile_signal_group_inner" value="@layout/status_bar_mobile_signal_group_inner"/>
+</overlay>
 
     <!-- Explicitly tie your local cloud IDs to the system's actual IDs -->
     <item target="id/mobile_signal_group_inner" value="@id/mobile_signal_group_inner"/>
